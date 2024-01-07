@@ -1,5 +1,8 @@
 import { Button, Divider, Stack, Typography } from "@mui/material";
 import { useExpensesStore } from "../stores/expense";
+import { AllExpenses } from "./AllExpenses";
+import { useState } from "react";
+import { Results } from "./Results";
 
 export const Menu = () => {
   const AlegreyaTitle = {
@@ -18,16 +21,16 @@ export const Menu = () => {
     color: '#fff' 
   };
 
-  const { fetchExpenses } = useExpensesStore.getState();
-  const handleClickExpenses = () => {
-    fetchExpenses()
-    console.log("click en menu");
-  }
+  const { fetchExpenses } = useExpensesStore.getState(); // Obtener fetchExpenses, showResults  del estado global
+  
+  const handleClickExpenses = async () => {
+    await fetchExpenses();
+    //showResults(true); // Cambiar showResults a true
+  };
+
 
   return (
-    <Stack
-        style={{ paddingLeft: '1rem' }}
-    >
+    <Stack style={{ paddingLeft: '1rem', width: '25%' }}>
       <Typography style={AlegreyaTitle} component='h2'>
         Menú
       </Typography>
@@ -40,32 +43,28 @@ export const Menu = () => {
         spacing={2}
       >
         <Typography style={AlegreyaText} component='a'>
-            Cargar un nuevo gasto
+          Cargar un nuevo gasto
         </Typography>
         <Typography style={AlegreyaText} component='a'>
-            Borrar un gasto
+          Borrar un gasto
         </Typography>
         <Typography style={AlegreyaText} component='a'>
-            Actualizar un gasto
+          Actualizar un gasto
         </Typography>
         <Typography style={AlegreyaText} component='a'>
-            Ver un gasto
+          Ver un gasto
         </Typography>
        
-        <Button>
-        <Typography style={AlegreyaText} component='a' onClick={handleClickExpenses}>
-            Ver todos los gastos
-        </Typography>
-        </Button>
+        <AllExpenses onClickExpenses={handleClickExpenses} />
+
         <Typography style={AlegreyaText} component='a'>
-            Ver gastos por día
+          Ver gastos por día
         </Typography>
         <Typography style={AlegreyaText} component='a'>
-            Ver gastos por categoría
+          Ver gastos por categoría
         </Typography>
         
       </Stack>
-    
     </Stack>
   );
 };

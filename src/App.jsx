@@ -17,20 +17,15 @@ function App() {
   };
 
   return (
-    <main>
-        <Typography style={kalamHeadingStyle} align='center' component='h1'>
+    <main style={{ overflowX: 'hidden', overflowY: 'auto' }}>
+        <Typography style={kalamHeadingStyle} align='center' component='h1' sx={{ height: '6rem' }}>
           ExpenseApp
         </Typography>
 
-        <Stack
-          direction='row'
-          gap={2}
-          justifyContent='space-between' // Cambiado de 'space-around' a 'space-between'
-          style={{ width: '100%', marginTop: '2rem' }} // Añadido margen superior y ancho del 100%
-        >
+        <div className='bodyContainer'>
           <Menu />
           <Results />
-        </Stack>
+        </div>
     </main>
   )
 }
