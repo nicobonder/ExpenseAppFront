@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 export const Results = () => {
   const AlegreyaTitle = {
-    fontFamily: "Alegreya",
+    fontFamily: "Alegreya, sans-serif",
     fontWeight: "bold",
     fontSize: "2.5rem",
     marginBottom: "1.5rem",
@@ -14,7 +14,7 @@ export const Results = () => {
   };
 
   const AlegreyaText = {
-    fontFamily: "Alegreya",
+    fontFamily: "Alegreya, sans-serif",
     fontWeight: 500,
     fontSize: "1.4rem",
     textAlign: "left",
@@ -24,7 +24,7 @@ export const Results = () => {
   };
 
   const AlegreyaListItem = {
-    fontFamily: "Alegreya",
+    fontFamily: "Alegreya, sans-serif",
     fontWeight: 500,
     fontSize: "1.4rem",
     textAlign: "left",
@@ -34,22 +34,32 @@ export const Results = () => {
   };
 
 
-  const { expenses, fetchExpenses } = useExpensesStore.getState();
-  let showResults = useExpensesStore((state) => state.showResults); // Obtener showResults del estado global
+  const { expenses, fetchExpenses, fetchExpense } = useExpensesStore.getState();
+  let showAllExpenses = useExpensesStore((state) => state.showAllExpenses); // Obtener showAllExpenses del estado global
+  let oneExpense = useExpensesStore((state) => state.showOneExpense); // Obtener showOneExpense del estado global
 
   useEffect(() => {
-    // Llamar a fetchExpenses cuando showResults cambie
-    if (showResults) {
+    // Llamar a fetchExpenses cuando showAllExpenses cambie
+    if (showAllExpenses) {
       fetchExpenses();
     }
-  }, [showResults, fetchExpenses]);
+  }, [showAllExpenses, fetchExpenses]);
+
+  useEffect(() => {
+    // Llamar a fetchExpense cuando showOneExpense cambie
+    if (oneExpense) {
+      fetchExpense();
+    }
+  }, [oneExpense, fetchExpense]);
+
 
   return (
+    <>
     <Stack style={{ paddingRight: "1rem", width: "70%", overflowY: "auto", overflowX: 'hidden' }}>
        <Typography style={AlegreyaTitle} component='h2'>
         Todos tus gastos
       </Typography>
-      {showResults && (
+      {showAllExpenses && (
         <List style={{ width: "100%", paddingLeft:"4rem" }}>
           {expenses.map((expense) => (
              <ListItem key={expense.id} sx={{padding:"0rem"}}>
@@ -65,5 +75,9 @@ export const Results = () => {
         </List>
       )}
     </Stack>
+    
+     
+    </>
+   
   );
 };

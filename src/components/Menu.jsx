@@ -1,31 +1,41 @@
 import { Button, Divider, Stack, Typography } from "@mui/material";
 import { useExpensesStore } from "../stores/expense";
 import { AllExpenses } from "./AllExpenses";
+import { ShowExpense } from "./ShowExpense";
+import { OneExpenseForm } from "./forms/OneExpenseForm";
 import { useState } from "react";
-import { Results } from "./Results";
 
 export const Menu = () => {
   const AlegreyaTitle = {
-    fontFamily: "Alegreya",
-    fontWeight: 'bold',
+    fontFamily: 'Fira Sans, sans-serif',
+    fontWeight: 500,
     fontSize: '2.5rem',
     marginBottom: '1.5rem',
-    color: '#fff'
+    backgroundImage: `linear-gradient(135deg, #FFFF00 43%, #fff 5%`,
+    backgroundClip: 'text',
+    color: 'transparent',
   };
 
   const AlegreyaText = {
-    fontFamily: "Alegreya",
+    fontFamily: "Fira Sans, sans-serif",
     fontWeight: 500,
     fontSize: "1.4rem",
     textAlign: 'left',
-    color: '#fff' 
+    backgroundImage: `linear-gradient(135deg, #FFFF00 10%, #fff 5%`,
+    backgroundClip: 'text',
+    color: 'transparent',
   };
 
-  const { fetchExpenses } = useExpensesStore.getState(); // Obtener fetchExpenses, showResults  del estado global
-  
+  const { fetchExpenses } = useExpensesStore.getState(); // Obtener fetchExpenses, showAllExpenses  del estado global
+  const [showOneExpenseForm, setShowOneExpenseForm] = useState(false);
+
   const handleClickExpenses = async () => {
     await fetchExpenses();
-    //showResults(true); // Cambiar showResults a true
+    //showAllExpenses(true); // Cambiar showAllExpenses a true
+  };
+
+  const onClickShowExpense = () => {
+    setShowOneExpenseForm(true);
   };
 
 
@@ -51,9 +61,9 @@ export const Menu = () => {
         <Typography style={AlegreyaText} component='a'>
           Actualizar un gasto
         </Typography>
-        <Typography style={AlegreyaText} component='a'>
-          Ver un gasto
-        </Typography>
+       
+        <ShowExpense onClickExpense={onClickShowExpense} />
+        {showOneExpenseForm && <OneExpenseForm />}
        
         <AllExpenses onClickExpenses={handleClickExpenses} />
 
