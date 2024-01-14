@@ -3,6 +3,7 @@ import { useExpensesStore } from "../stores/expense";
 import { useEffect } from "react";
 
 export const Results = () => {
+
   const AlegreyaTitle = {
     fontFamily: "Alegreya, sans-serif",
     fontWeight: "bold",
@@ -33,10 +34,10 @@ export const Results = () => {
     color: 'transparent',
   };
 
+  const { expenses, fetchExpenses, oneExpense, fetchExpense, selectedExpenseId, showOneExpense } = useExpensesStore();
+  
 
-  const { expenses, fetchExpenses, fetchExpense } = useExpensesStore.getState();
-  let showAllExpenses = useExpensesStore((state) => state.showAllExpenses); // Obtener showAllExpenses del estado global
-  let oneExpense = useExpensesStore((state) => state.showOneExpense); // Obtener showOneExpense del estado global
+  let showAllExpenses = useExpensesStore((state) => state.showAllExpenses);
 
   useEffect(() => {
     // Llamar a fetchExpenses cuando showAllExpenses cambie
@@ -45,13 +46,14 @@ export const Results = () => {
     }
   }, [showAllExpenses, fetchExpenses]);
 
+  //Es el cuarto paso en el flow
+  //Se ejecuta fetchExpense del store y se obtiene la info para renderizar con oneExpense
   useEffect(() => {
-    // Llamar a fetchExpense cuando showOneExpense cambie
-    if (oneExpense) {
-      fetchExpense();
+    // Llamar a fetchExpense cuando selectedExpenseId cambie
+    if (selectedExpenseId) {
+      fetchExpense(selectedExpenseId);
     }
-  }, [oneExpense, fetchExpense]);
-
+  }, [selectedExpenseId, fetchExpense]);
 
   return (
     <>
@@ -76,6 +78,16 @@ export const Results = () => {
       )}
     </Stack>
     
+    <Stack style={{ paddingRight: "1rem", width: "70%", overflowY: "auto", overflowX: 'hidden' }}>
+      <Typography style={AlegreyaTitle} component='h2'>
+        Tu gasto
+      </Typography>
+      {showOneExpense && (
+        <Typography style={AlegreyaText} component="h4">
+          {`${oneExpense.date} - $${oneExpense.amount} - ${oneExpense.categoryName}`}
+        </Typography>
+      )}
+    </Stack>
      
     </>
    
